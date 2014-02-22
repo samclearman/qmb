@@ -1,0 +1,49 @@
+sage: def product(l):
+...       return reduce(lambda x,y: x*y, l)
+sage: q = var('q')
+sage: attach "/Users/samclearman/Documents/math/q characters/quantum matrix bialgebra/sage implementation.sage"
+sage: QMB = QuantumMatrixBialgebra(q, 4)
+sage: x = QMB.gen
+sage: x(1,2)
+r1c2
+sage: ((q^(-1) * x(1,4) * x(4,2) * x(2,1)) + (x(2,1) * x(1,4) * x(4,2)) + (q * x(4,2) * x(2,1)  * x(1,4))) * x(3,3)
+1/q*r1c4*r4c2*r2c1*r3c3 + r2c1*r1c4*r4c2*r3c3 + q*r4c2*r2c1*r1c4*r3c3
+sage: (((q^(-1) * x(1,4) * x(4,2) * x(2,1)) + (x(2,1) * x(1,4) * x(4,2)) + (q * x(4,2) * x(2,1)  * x(1,4))) * x(3,3)).canonical()
+(q+1/q+1)*r1c4*r2c1*r3c3*r4c2 + (q*(sqrt(q)-1/sqrt(q))+(sqrt(q)-1/sqrt(q))/q)*r1c4*r2c2*r3c3*r4c1
+sage: (((q^(-1) * x(1,4) * x(4,2) * x(2,1)) + (x(2,1) * x(1,4) * x(4,2)) + (q * x(4,2) * x(2,1)  * x(1,4))) * x(3,3)).sigma([[1,1,0,0],[1,1,1,0],[1,1,1,1],[1,1,1,1]])
+0
+sage: foo = quantumdeterminant(QMB, [1,3], [2,3])
+sage: def imm_epsilon(lam):
+...       imm = QMB(0)
+...       for osp in OrderedSetPartitions([1..sum(lam)], list(lam)):
+...           imm += product([quantumdeterminant(QMB,s,s) for s in osp])
+...       return imm
+sage: def imm_phi(lam):
+...       imm = QMB(0)
+...       Sym = SymmetricFunctions(QQ)
+...       symfn = Sym.e()(Sym.m()(lam))
+...       for mu in Partitions(sum(lam)):
+...           imm += symfn.coefficient(mu) * imm_epsilon(mu)
+...       return imm
+sage: def imm_psi(lam):
+...       imm = QMB(0)
+...       Sym = SymmetricFunctions(QQ)
+...       symfn = Sym.e()(Sym.p()(lam))
+...       for mu in Partitions(sum(lam)):
+...           imm += symfn.coefficient(mu) * imm_epsilon(mu)
+...       return imm
+sage: imm_phi([2,1])
+-2*r1c1*r2c2*r3c3 + 3/sqrt(q)*r1c1*r2c3*r3c2 + r1c1*r3c3*r2c2 + 2/sqrt(q)*r1c2*r2c1*r3c3 + (-3/q)*r1c2*r2c3*r3c1 + (-3/q)*r1c3*r2c1*r3c2 + 3/q^(3/2)*r1c3*r2c2*r3c1 + (-1/sqrt(q))*r1c3*r3c1*r2c2 + r2c2*r3c3*r1c1 + (-1/sqrt(q))*r2c3*r3c2*r1c1
+sage: imm_epsilon([2,1]).sigma([[1,0,0],[0,1,1],[0,1,1]])
+sqrt(q) + 1
+sage: imm_epsilon([2,1]).sigma([[1,1,1],[1,1,1],[0,1,1]])
+sqrt(q)
+sage: imm_epsilon([2,1]).sigma([[1,1,1],[1,1,1],[1,1,1]])
+0
+sage: imm_psi([2,1])
+-r1c1*r2c2*r3c3 - r1c1*r3c3*r2c2 + 2/sqrt(q)*r1c2*r2c1*r3c3 + 2/sqrt(q)*r1c3*r3c1*r2c2 + r2c2*r1c1*r3c3 - r2c2*r3c3*r1c1 + 2/sqrt(q)*r2c3*r3c2*r1c1 + r3c3*r1c1*r2c2 + r3c3*r2c2*r1c1
+sage: x = QMB.gen
+sage: x(2,2) * x(1,1) 
+r2c2*r1c1
+sage: (x(2,2) * x(1,1) ).canonical()
+r1c1*r2c2 + (sqrt(q)-1/sqrt(q))*r1c2*r2c1
