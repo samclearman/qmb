@@ -170,7 +170,7 @@ class QuantumMatrixBialgebra(FreeAlgebra_generic):
         for k in range(1,n+1):
             for i in range(1,m+1):
                 for j in range(i+1,m+1):
-                    rels[x(j,k) * x(i,k)] = self.variable * x(k,i) * x(l,i)
+                    rels[x(j,k) * x(i,k)] = self.variable * x(i,k) * x(j,k)
         for i in range(1,n+1):
             for j in range(i+1,n+1):
                 for k in range(1,m+1):

@@ -1,7 +1,7 @@
 sage: def product(l):
 ...       return reduce(lambda x,y: x*y, l)
 sage: q = var('q')
-sage: attach "/Users/samclearman/Documents/math/q characters/quantum matrix bialgebra/sage implementation.sage"
+sage: attach "qmb.sage"
 sage: QMB = QuantumMatrixBialgebra(q, 4)
 sage: x = QMB.gen
 sage: x(1,2)
